@@ -1,0 +1,5 @@
+{
+  "name": "gotham-night",
+  "owner": { "name": "DemetriosVlassis" },
+  "plugins": [{ "name": "gotham-night", "source": "./" }]
+}
