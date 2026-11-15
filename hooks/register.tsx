@@ -1,5 +1,5 @@
 import { atom, read, update } from 'claude-code'
-import type { Register, ThemeSetArgs } from 'claude-code'
+import type { Register, ThemeResult, ThemeSetArgs } from 'claude-code'
 
 import type { Watch } from '../types'
 import { makeColors } from './make-colors.js'
@@ -168,9 +168,24 @@ function buildScene(hasStorm: boolean): string {
 </svg>`
 }
 
+
+// Builds of the app differ on the backdrop's key: this one names it `scene`, another `id`.
+// Send the one this build's types name first, and the other where that is refused.
+const GLASS = { blur: 8, tint: '#0a0c11', opacity: 0.74 }
 const LOOK: ThemeSetArgs = {
   colors: theme,
-  backdrop: { scene: SCENE_NAME, glass: { blur: 8, tint: '#0a0c11', opacity: 0.74 } },
+  backdrop: { scene: SCENE_NAME, glass: GLASS },
+}
+const LOOK_BY_ID = { colors: theme, backdrop: { id: SCENE_NAME, glass: GLASS } } as unknown as ThemeSetArgs
+
+type ThemeSetter = { theme: { set: (look: ThemeSetArgs) => Promise<ThemeResult> } }
+
+async function setLook($: ThemeSetter): Promise<ThemeResult> {
+  try {
+    return await $.theme.set(LOOK)
+  } catch {
+    return $.theme.set(LOOK_BY_ID)
+  }
 }
 
 const HELP = [
@@ -198,7 +213,7 @@ export const register: Register = on => {
       if (unpainted !== undefined) {
         $.ui.toast(unpainted)
       }
-      const set = await $.theme.set(LOOK)
+      const set = await setLook($)
 
       $.ui.status(set.isDrawn ? 'Gotham night: on watch' : set.reason)
     }
@@ -211,7 +226,7 @@ export const register: Register = on => {
 
     if (arg === 'on') {
       await update($, isOn, () => true)
-      await $.theme.set(LOOK)
+      await setLook($)
       $.ui.status('Gotham night: on watch')
 
       return { text: 'Gotham night is on. The city is yours.' }
@@ -284,7 +299,9 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'Backdrop' }, async ($, e, next) => {
-    if (e.props.scene !== SCENE_NAME || (e.surface !== 'desktop' && e.surface !== 'mobile')) {
+    const named = e.props as { scene?: string; id?: string }
+
+    if ((named.scene ?? named.id) !== SCENE_NAME || (e.surface !== 'desktop' && e.surface !== 'mobile')) {
       return next(e)
     }
 
