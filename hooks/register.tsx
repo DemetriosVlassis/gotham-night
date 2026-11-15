@@ -57,6 +57,7 @@ function buildScene(hasStorm: boolean): string {
 <style>
 .cloud{animation:drift 90s linear infinite alternate}
 .cloud.b{animation-duration:140s;animation-direction:alternate-reverse}
+.cloud.c{animation-duration:200s}
 .beam{transform-origin:260px 900px;animation:sweep 24s ease-in-out infinite alternate}
 .w{animation:blink 7s ease-in-out infinite}
 .w.d2{animation-delay:2.5s}.w.d3{animation-delay:4.5s}
@@ -83,6 +84,11 @@ function buildScene(hasStorm: boolean): string {
 <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070c"/><stop offset=".65" stop-color="#0b111e"/><stop offset="1" stop-color="#18213a"/></linearGradient>
 <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f5e9b0" stop-opacity=".38"/><stop offset="1" stop-color="#f5e9b0" stop-opacity="0"/></radialGradient>
 <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#f5c518" stop-opacity=".26"/><stop offset="1" stop-color="#f5c518" stop-opacity="0"/></linearGradient>
+<filter id="soft" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>
+<g id="clb"><ellipse cx="0" cy="0" rx="120" ry="20"/><ellipse cx="-72" cy="7" rx="80" ry="14"/><ellipse cx="82" cy="8" rx="92" ry="14"/><ellipse cx="-22" cy="-14" rx="58" ry="17"/><ellipse cx="42" cy="-11" rx="50" ry="14"/><ellipse cx="-110" cy="12" rx="60" ry="9"/><ellipse cx="130" cy="13" rx="70" ry="8"/></g>
+<g id="cl"><use href="#clb" y="-6" fill="#33426a"/><use href="#clb" fill="#151d2f"/></g>
+<pattern id="win" width="22" height="28" patternUnits="userSpaceOnUse"><rect x="7" y="9" width="7" height="11" fill="#121a2c"/></pattern>
+<pattern id="winfar" width="18" height="24" patternUnits="userSpaceOnUse"><rect x="6" y="8" width="5" height="9" fill="#18223a"/></pattern>
 <radialGradient id="disc" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f7d95a" stop-opacity=".5"/><stop offset=".8" stop-color="#f5c518" stop-opacity=".3"/><stop offset="1" stop-color="#f5c518" stop-opacity=".1"/></radialGradient>
 <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#27324d" stop-opacity="0"/><stop offset="1" stop-color="#27324d" stop-opacity=".55"/></linearGradient>
 </defs>
@@ -95,27 +101,59 @@ function buildScene(hasStorm: boolean): string {
 <circle cx="1320" cy="170" r="220" fill="url(#halo)"/>
 <circle cx="1320" cy="170" r="64" fill="#efe6bd" opacity=".88"/>
 <circle cx="1300" cy="155" r="10" fill="#d9cf9f" opacity=".5"/><circle cx="1342" cy="190" r="14" fill="#d9cf9f" opacity=".4"/>
-<g class="cloud" fill="#1a2233" opacity=".85"><ellipse cx="1220" cy="205" rx="270" ry="26"/><ellipse cx="420" cy="300" rx="320" ry="30"/></g>
-<g class="cloud b" fill="#131a28" opacity=".85"><ellipse cx="900" cy="140" rx="340" ry="24"/><ellipse cx="1450" cy="330" rx="240" ry="22"/></g>
+<g filter="url(#soft)" opacity=".92">
+<g class="cloud"><use href="#cl" transform="translate(1240,222) scale(1.7)"/><use href="#cl" transform="translate(430,300) scale(1.9)"/><use href="#cl" transform="translate(700,255) scale(.9)"/></g>
+<g class="cloud b"><use href="#cl" transform="translate(880,130) scale(2)"/><use href="#cl" transform="translate(1490,120) scale(1.1)"/></g>
+<g class="cloud c"><use href="#cl" transform="translate(1040,340) scale(1.2)"/><use href="#cl" transform="translate(130,120)"/><use href="#cl" transform="translate(1500,330) scale(1.4)"/></g>
+</g>
 <g class="beam"><polygon points="250,900 270,900 400,230 140,230" fill="url(#beam)"/>
 <ellipse cx="270" cy="210" rx="135" ry="92" fill="url(#disc)"/><ellipse cx="270" cy="210" rx="135" ry="92" fill="none" stroke="#f5c518" stroke-opacity=".28" stroke-width="2"/>
 <g transform="translate(180,218) scale(5)" fill="#05070c" opacity=".92"><path d="${BAT}"/></g></g>
 <g class="bats" fill="#04060a"><g transform="translate(0,300)"><path class="flap" d="${BAT}"/></g><g transform="translate(60,340) scale(.7)"><path class="flap" d="${BAT}"/></g><g transform="translate(-50,360) scale(.8)"><path class="flap" d="${BAT}"/></g></g>
 <g class="bats b" fill="#04060a"><g transform="translate(0,200) scale(.6)"><path class="flap" d="${BAT}"/></g><g transform="translate(70,230) scale(.5)"><path class="flap" d="${BAT}"/></g></g>
+<path d="M1150,640 Q1195,560 1236,474 Q1396,700 1556,474 Q1585,540 1600,570 M1316,559 V640 M1356,576 V640 M1396,587 V640 M1436,576 V640 M1476,559 V640 M1276,524 V640 M1516,524 V640" fill="none" stroke="#141c2f" stroke-width="2.5"/>
+<defs><g id="farb">
+<rect x="40" y="560" width="70" height="340"/><rect x="210" y="520" width="50" height="380"/><rect x="390" y="580" width="90" height="320"/>
+<rect x="600" y="500" width="60" height="400"/><rect x="880" y="540" width="80" height="360"/><rect x="1080" y="490" width="55" height="410"/>
+</g></defs>
+<use href="#farb" fill="#111828"/><use href="#farb" fill="url(#winfar)"/>
 <g fill="#111828">
-<rect x="40" y="560" width="70" height="340"/><polygon points="40,560 75,480 110,560"/><rect x="210" y="520" width="50" height="380"/><rect x="390" y="580" width="90" height="320"/>
-<polygon points="390,580 435,520 480,580"/><rect x="600" y="500" width="60" height="400"/><rect x="627" y="430" width="6" height="70"/><rect x="880" y="540" width="80" height="360"/>
-<rect x="1080" y="490" width="55" height="410"/><polygon points="1080,490 1107,410 1135,490"/><rect x="1290" y="560" width="90" height="340"/><rect x="1480" y="510" width="60" height="390"/>
+<polygon points="40,560 75,480 110,560"/><polygon points="210,520 235,470 260,520"/><polygon points="390,580 435,520 480,580"/><rect x="627" y="430" width="6" height="70"/>
+<polygon points="600,500 630,470 660,500"/><rect x="880" y="530" width="80" height="10"/><rect x="905" y="505" width="30" height="25"/><polygon points="1080,490 1107,410 1135,490"/>
+<rect x="1225" y="470" width="22" height="430"/><rect x="1545" y="470" width="22" height="430"/><rect x="1150" y="640" width="450" height="9"/>
+<rect x="1221" y="462" width="30" height="8"/><rect x="1541" y="462" width="30" height="8"/>
 </g>
+<defs><g id="frontb">
+<rect x="0" y="700" width="90" height="200"/><rect x="80" y="640" width="70" height="260"/><rect x="150" y="720" width="110" height="180"/>
+<rect x="260" y="590" width="60" height="310"/><rect x="320" y="680" width="120" height="220"/><rect x="440" y="620" width="80" height="280"/>
+<rect x="520" y="730" width="140" height="170"/><rect x="660" y="650" width="70" height="250"/><rect x="730" y="520" width="90" height="380"/>
+<rect x="820" y="700" width="130" height="200"/><rect x="950" y="610" width="75" height="290"/><rect x="1025" y="740" width="120" height="160"/>
+<rect x="1145" y="580" width="85" height="320"/><rect x="1230" y="690" width="120" height="210"/><rect x="1350" y="560" width="44" height="340"/>
+<rect x="1486" y="560" width="44" height="340"/><rect x="1394" y="650" width="92" height="250"/><rect x="1530" y="690" width="70" height="210"/>
+</g></defs>
+<use href="#frontb" fill="#070a10"/><use href="#frontb" fill="url(#win)"/>
 <g fill="#070a10">
-<rect x="0" y="700" width="90" height="200"/><rect x="80" y="640" width="70" height="260"/><polygon points="80,640 115,590 150,640"/><rect x="150" y="720" width="110" height="180"/>
-<rect x="260" y="590" width="60" height="310"/><polygon points="260,590 290,500 320,590"/><rect x="288" y="450" width="4" height="60"/><rect x="320" y="680" width="120" height="220"/>
-<rect x="440" y="620" width="80" height="280"/><polygon points="440,620 450,600 460,620 470,600 480,620 490,600 500,620 510,600 520,620"/><rect x="520" y="730" width="140" height="170"/><rect x="660" y="650" width="70" height="250"/>
-<rect x="730" y="520" width="90" height="380"/><polygon points="730,520 775,420 820,520"/><rect x="773" y="370" width="4" height="60"/><rect x="820" y="700" width="130" height="200"/>
-<rect x="950" y="610" width="75" height="290"/><polygon points="950,610 987,560 1025,610"/><rect x="1025" y="740" width="120" height="160"/><rect x="1145" y="580" width="85" height="320"/>
-<polygon points="1145,580 1155,560 1165,580 1177,560 1188,580 1199,560 1210,580 1220,560 1230,580"/><rect x="1230" y="690" width="120" height="210"/><rect x="1350" y="630" width="80" height="270"/>
-<polygon points="1350,630 1390,570 1430,630"/><rect x="1430" y="720" width="100" height="180"/><rect x="1530" y="660" width="70" height="240"/>
+<rect x="30" y="650" width="3" height="50"/><rect x="22" y="662" width="19" height="2"/><rect x="0" y="694" width="94" height="6"/>
+<polygon points="80,640 115,590 150,640"/><rect x="188" y="682" width="36" height="24" rx="3"/><polygon points="186,682 206,668 226,682"/>
+<rect x="191" y="706" width="3" height="14"/><rect x="218" y="706" width="3" height="14"/><rect x="146" y="714" width="118" height="6"/>
+<polygon points="260,590 290,500 320,590"/><rect x="288" y="450" width="4" height="60"/><polygon points="256,590 262,572 268,590"/><polygon points="312,590 318,572 324,590"/>
+<rect x="316" y="674" width="128" height="6"/><rect x="350" y="656" width="26" height="18"/><rect x="400" y="662" width="4" height="12"/>
+<polygon points="440,620 450,600 460,620 470,600 480,620 490,600 500,620 510,600 520,620"/><rect x="516" y="724" width="148" height="6"/>
+<rect x="560" y="708" width="30" height="16" rx="2"/><rect x="620" y="700" width="3" height="24"/><polygon points="660,650 695,625 730,650"/>
+<polygon points="730,520 775,420 820,520"/><rect x="773" y="370" width="4" height="60"/><polygon points="726,520 733,496 740,520"/><polygon points="810,520 817,496 824,520"/>
+<rect x="726" y="630" width="98" height="5"/><rect x="816" y="694" width="138" height="6"/><rect x="850" y="676" width="34" height="18" rx="2"/><rect x="915" y="668" width="3" height="26"/>
+<polygon points="950,610 987,560 1025,610"/><rect x="985" y="536" width="3" height="28"/><rect x="1021" y="734" width="128" height="6"/><rect x="1060" y="716" width="28" height="18"/>
+<polygon points="1145,580 1155,560 1165,580 1177,560 1188,580 1199,560 1210,580 1220,560 1230,580"/><rect x="1186" y="520" width="3" height="42"/>
+<rect x="1226" y="684" width="128" height="6"/><rect x="1262" y="664" width="34" height="20" rx="3"/><polygon points="1260,664 1279,652 1298,664"/>
+<polygon points="1350,560 1372,450 1394,560"/><polygon points="1486,560 1508,450 1530,560"/><polygon points="1394,650 1440,590 1486,650"/>
+<rect x="1371" y="428" width="3" height="26"/><rect x="1507" y="428" width="3" height="26"/><rect x="1438" y="566" width="4" height="30"/>
+<polygon points="1346,560 1351,540 1356,560"/><polygon points="1388,560 1393,540 1398,560"/><polygon points="1482,560 1487,540 1492,560"/><polygon points="1524,560 1529,540 1534,560"/>
+<rect x="1548" y="655" width="34" height="24" rx="3"/><polygon points="1546,655 1565,642 1584,655"/><rect x="1551" y="679" width="3" height="11"/><rect x="1576" y="679" width="3" height="11"/>
 </g>
+<circle cx="1440" cy="705" r="21" fill="#f1e3a0" opacity=".6"/><path d="M1419,705 h42 M1440,684 v42 M1425,690 l30,30 M1455,690 l-30,30" stroke="#070a10" stroke-width="2.5" fill="none"/><circle cx="1440" cy="705" r="6" fill="#070a10"/>
+<path d="M1424,900 v-52 a16,16 0 0 1 32,0 v52z" fill="#111a2c"/>
+<g fill="#f5c518" opacity=".55"><rect x="1368" y="600" width="8" height="28" rx="4"/><rect x="1504" y="600" width="8" height="28" rx="4"/><rect x="286" y="560" width="8" height="24" rx="4"/></g>
+<g stroke="#1b2740" stroke-width="2" opacity=".8"><path d="M820,520 V900 M1230,580 V900 M1530,560 V900 M150,640 V900 M320,590 V900 M520,620 V900 M1025,610 V900 M1394,560 V650" fill="none"/></g>
 <circle cx="775" cy="580" r="26" fill="#f1e3a0" opacity=".85"/><path d="M775,580 v-17 M775,580 h12" stroke="#070a10" stroke-width="3" fill="none"/>
 <circle class="beacon" cx="775" cy="370" r="4" fill="#d1423a"/><circle class="beacon" cx="290" cy="450" r="3.5" fill="#d1423a" style="animation-delay:1.1s"/>
 <g fill="#f5c518">
